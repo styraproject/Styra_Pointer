@@ -4,8 +4,8 @@
  *   control in various Styra projects.
  */
 
-#ifndef __Styra_Pointer_H__
-#define __Styra_Pointer_H__
+#ifndef __STYRA_POINTER_H__
+#define __STYRA_POINTER_H__
 #include <Arduino.h>
 
 #define FALSE 0;
@@ -19,7 +19,9 @@ public:
   virtual uint8_t isDisabled()=0;
   virtual void enableWheelLock()=0;
   virtual void disableWheelLock()=0;
+  virtual void invertX()=0;
+  virtual void invertY()=0;
 };
 
 
-#endif /* __Styra_Pointer_H__ */
+#endif /* __STYRA_POINTER_H__ */

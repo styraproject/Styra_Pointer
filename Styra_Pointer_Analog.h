@@ -23,12 +23,18 @@
    uint8_t isDisabled();
    void enableWheelLock();
    void disableWheelLock();
+   void invertX();
+   void invertY();
 
  private:
    void detectRestingCenter();
    /* Analog ports for X and Y axis inputs */
    uint8_t _x_axis;
    uint8_t _y_axis;
+
+   /* Variables to invert the x and y axis values */
+   uint8_t _invert_x;
+   uint8_t _invert_y;
 
    /* Varialbles for pointer refresh */
    unsigned int _refresh_interval = 20;  // Time in ms between pointer position updates

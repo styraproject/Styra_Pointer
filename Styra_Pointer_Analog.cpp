@@ -11,6 +11,8 @@
    _y_axis = y_axis; // Analog input for Y axis
    _disabled = FALSE;
    _wheel_lock = FALSE;
+   _invert_x = FALSE;
+   _invert_y = FALSE;
  }
 
  void AnalogPointer::begin() {
@@ -30,7 +32,7 @@
 
           /* Make points relative to center */
           y1 = y1 - _analog_center[Y];
-          int distance = map(y1, 0, 512, 0, 3);
+          int distance = map(y1, 0, 512, 0, 3) * -1;
           Mouse.move(0,0,distance);
           /* Update the clock */
           _last_update = current_time;
@@ -41,7 +43,9 @@
        if (current_time - _last_update > _refresh_interval) {
           // read and scale the two axes:
           int x1 = analogRead(X);
+          if (_invert_x) x1 = x1 * -1;
           int y1 = analogRead(Y);
+          if (_invert_y) y1 = y1 * -1;
 
           /* Make points relative to center */
           x1 = x1 - _analog_center[X];
@@ -67,18 +71,18 @@
           }
 
           int radius = max(abs(x1),abs(y1));
-        //  radius = map(radius, 0, 512, 0, range); /* Linear Mapping */
+          radius = map(radius, 0, 512, 0, 12); /* Linear Mapping */
         //  radius = pow (1.005, radius) - 0.1; /* Initial Exponential Curve Mapping */
         //  radius = pow (1.012, radius)/8.0 - 0.001; /* Exponential Curve - jhatmaker 1 */
         //  radius = pow (1.012, radius)/30.0 - 0.001; /* Exponential Curve - jhatmaker 2 */
-          radius = pow (1.012, radius)/30.0 + 0.92; /* Exponential Curve - jhatmaker 3 */
+          //radius = pow (1.012, radius)/30.0 + 0.92; /* Exponential Curve - jhatmaker 3 */
           Serial.print(radius);
           Serial.print(":");
           Serial.println(A);
           int x2 = radius * cos(A);
           int y2 = radius * sin(A);
           Mouse.move(x2, y2, 0);
-        
+
 
           /* Track the length of time in ms that the pointer has been moving */
           if (x2 == 0 && x1 == 0) {
@@ -104,8 +108,10 @@
 
    for (int i = 0; i < _sample_count; i++) {
      x_sample[i] = analogRead(_x_axis);
+     if (_invert_x) x_sample[i] = x_sample[i] * -1;
      x_avg += x_sample[i];
-     y_sample[i] = analogRead(_x_axis);
+     y_sample[i] = analogRead(_y_axis);
+     if (_invert_y) y_sample[i] = y_sample[i] * -1;
      y_avg += y_sample[i];
      delay(100);
    }
@@ -148,3 +154,10 @@ void AnalogPointer::disableWheelLock() {
   _wheel_lock = FALSE;
 }
 
+void AnalogPointer::invertX() {
+  _invert_x = TRUE;
+}
+
+void AnalogPointer::invertY() {
+  _invert_y = TRUE;
+}
