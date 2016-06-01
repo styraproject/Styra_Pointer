@@ -26,10 +26,10 @@
 #define X 0
 #define Y 1
 
- class AnalogPointer: public StyraPointer
+ class StyraPointerAnalog: public StyraPointer
  {
  public:
-   AnalogPointer(const uint8_t x_axis, const uint8_t y_axis);
+   StyraPointerAnalog(const uint8_t x_axis, const uint8_t y_axis);
    void begin();
    void update();
    void disable(uint8_t);

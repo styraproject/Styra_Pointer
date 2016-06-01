@@ -19,7 +19,7 @@
 
  #include "Styra_Pointer_Analog.h"
 
- AnalogPointer::AnalogPointer(uint8_t x_axis, uint8_t y_axis) {
+ StyraPointerAnalog::StyraPointerAnalog(uint8_t x_axis, uint8_t y_axis) {
    _x_axis = x_axis; // Analog input for X axis
    _y_axis = y_axis; // Analog input for Y axis
    _disabled = FALSE;
@@ -28,13 +28,13 @@
    _invert_y = FALSE;
  }
 
- void AnalogPointer::begin() {
+ void StyraPointerAnalog::begin() {
    detectRestingCenter();
    Mouse.begin();
 
  }
 
- void AnalogPointer::update() {
+ void StyraPointerAnalog::update() {
    if (! _disabled) {
      unsigned long current_time = millis();
 
@@ -89,9 +89,9 @@
         //  radius = pow (1.012, radius)/8.0 - 0.001; /* Exponential Curve - jhatmaker 1 */
         //  radius = pow (1.012, radius)/30.0 - 0.001; /* Exponential Curve - jhatmaker 2 */
           //radius = pow (1.012, radius)/30.0 + 0.92; /* Exponential Curve - jhatmaker 3 */
-          Serial.print(radius);
-          Serial.print(":");
-          Serial.println(A);
+          // Serial.print(radius);
+          // Serial.print(":");
+          // Serial.println(A);
           int x2 = radius * cos(A);
           int y2 = radius * sin(A);
           Mouse.move(x2, y2, 0);
@@ -111,7 +111,7 @@
    }
 }
 
- void AnalogPointer::detectRestingCenter() {
+ void StyraPointerAnalog::detectRestingCenter() {
    int x_sample[_sample_count];
    int y_sample[_sample_count];
    int x_avg = 0;
@@ -151,26 +151,26 @@
 
  }
 
- void AnalogPointer::disable(uint8_t disabled){
+ void StyraPointerAnalog::disable(uint8_t disabled){
    _disabled = disabled;
  }
 
- uint8_t AnalogPointer::isDisabled(){
+ uint8_t StyraPointerAnalog::isDisabled(){
    return _disabled;
  }
 
-void AnalogPointer::enableWheelLock() {
+void StyraPointerAnalog::enableWheelLock() {
   _wheel_lock = TRUE;
 }
 
-void AnalogPointer::disableWheelLock() {
+void StyraPointerAnalog::disableWheelLock() {
   _wheel_lock = FALSE;
 }
 
-void AnalogPointer::invertX() {
+void StyraPointerAnalog::invertX() {
   _invert_x = TRUE;
 }
 
-void AnalogPointer::invertY() {
+void StyraPointerAnalog::invertY() {
   _invert_y = TRUE;
 }
